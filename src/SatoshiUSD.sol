@@ -2,26 +2,28 @@
 pragma solidity ^0.8.0;
 
 /**
- *  ░▒▓███████▓▒░░▒▓██████▓▒░▒▓████████▓▒░▒▓██████▓▒░ ░▒▓███████▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░░▒▓███████▓▒░▒▓███████▓▒░
- * ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░  ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░
- * ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░  ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░
- *  ░▒▓██████▓▒░░▒▓████████▓▒░ ░▒▓█▓▒░  ░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░░▒▓████████▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░
- *        ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░  ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░
- *        ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░  ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░      ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░
- * ░▒▓███████▓▒░░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░   ░▒▓██████▓▒░░▒▓███████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░       ░▒▓██████▓▒░░▒▓███████▓▒░░▒▓███████▓▒░
+ * ███████╗ █████╗ ████████╗ ██████╗ ███████╗██╗  ██╗██╗    ██╗   ██╗███████╗██████╗
+ * ██╔════╝██╔══██╗╚══██╔══╝██╔═══██╗██╔════╝██║  ██║██║    ██║   ██║██╔════╝██╔══██╗
+ * ███████╗███████║   ██║   ██║   ██║███████╗███████║██║    ██║   ██║███████╗██║  ██║
+ * ╚════██║██╔══██║   ██║   ██║   ██║╚════██║██╔══██║██║    ██║   ██║╚════██║██║  ██║
+ * ███████║██║  ██║   ██║   ╚██████╔╝███████║██║  ██║██║    ╚██████╔╝███████║██████╔╝
+ * ╚══════╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝     ╚═════╝ ╚══════╝╚═════╝
  */
 
 /**
  * @title: Satoshi USD (saUSD)
  * @author: Chukwubuike Victory Chime GH/Twitter: yeahChibyke
- * @notice: This contract is just the ERC20 implementation of the stablecoin, and it will be governed by the SatoshiENgine contract
+ * @notice: This contract is just the ERC20 implementation of the stablecoin, and it will be governed by the SatoshiEngine contract
  * @dev: Collateral: Exogenous (BTC)
- * @dev: Stability Mechanism: ALgorithmic
- * @dev: Relative Stability: Pegged to USDC
+ * @dev: Stability Mechanism: Algorithmic
+ * @dev: Relative Stability: Pegged to USD
  */
 import {ERC20Burnable, ERC20} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
+// ------------------------------------------------------------------
+//                             CONTRACT
+// ------------------------------------------------------------------
 contract SatoshiUSD is ERC20Burnable, Ownable {
     // ------------------------------------------------------------------
     //                              ERRORS
@@ -36,7 +38,7 @@ contract SatoshiUSD is ERC20Burnable, Ownable {
     constructor() ERC20("SatoshiUSD", "saUSD") Ownable(msg.sender) {}
 
     // ------------------------------------------------------------------
-    //                        EXTERNAL FUNCTIONS
+    //                        EXTERNAL FUNCTION
     // ------------------------------------------------------------------
     function mint(address _to, uint256 _amount) external onlyOwner returns (bool) {
         if (_to == address(0)) {
@@ -51,7 +53,7 @@ contract SatoshiUSD is ERC20Burnable, Ownable {
     }
 
     // ------------------------------------------------------------------
-    //                         PUBLIC FUNCTIONS
+    //                         PUBLIC FUNCTION
     // ------------------------------------------------------------------
     function burn(uint256 _amount) public override onlyOwner {
         if (_amount == 0) {
