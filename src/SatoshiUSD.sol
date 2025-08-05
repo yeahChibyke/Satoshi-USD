@@ -11,13 +11,18 @@ pragma solidity ^0.8.0;
  */
 
 /**
- * @title: Satoshi USD (saUSD)
+ * @title: Satoshi USD (`saUSD`)
  * @author: Chukwubuike Victory Chime GH/Twitter: yeahChibyke
  * @notice: This contract is just the ERC20 implementation of the stablecoin, and it will be governed by the SatoshiEngine contract
- * @dev: Collateral: Exogenous (BTC)
+ * @notice: saUSD has 6 decimals, similar to `USDC`
+ * @dev: Collateral: Exogenous (`BTC`)
  * @dev: Stability Mechanism: Algorithmic
- * @dev: Relative Stability: Pegged to USD
+ * @dev: Relative Stability: Pegged to `USD`
  */
+
+// ------------------------------------------------------------------
+//                             IMPORTS
+// ------------------------------------------------------------------
 import {ERC20Burnable, ERC20} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -31,6 +36,11 @@ contract SatoshiUSD is ERC20Burnable, Ownable {
     error SAUSD__ZeroAmount();
     error SAUSD__BalanceExceeded();
     error SAUSD__ZeroAddress();
+
+    // ------------------------------------------------------------------
+    //                             STORAGE
+    // ------------------------------------------------------------------
+    uint8 private immutable dec = 6;
 
     // ------------------------------------------------------------------
     //                           CONSTRUCTOR
@@ -55,7 +65,7 @@ contract SatoshiUSD is ERC20Burnable, Ownable {
     // ------------------------------------------------------------------
     //                         PUBLIC FUNCTION
     // ------------------------------------------------------------------
-    function burn(uint256 _amount) public override onlyOwner {
+    function burn(uint256 _amount) public override {
         if (_amount == 0) {
             revert SAUSD__ZeroAmount();
         }
@@ -66,5 +76,12 @@ contract SatoshiUSD is ERC20Burnable, Ownable {
         }
 
         super.burn(_amount);
+    }
+
+    // ------------------------------------------------------------------
+    //                             OVERRIDE
+    // ------------------------------------------------------------------
+    function decimals() public pure override returns (uint8) {
+        return dec;
     }
 }
