@@ -103,11 +103,21 @@ contract SatoshiUSDEngine is ReentrancyGuard {
     //                        EXTERNAL FUNCTIONS
     // ------------------------------------------------------------------
 
+    /**
+     * @notice and @dev This function will deposit `BTC` and mint `saUSD` in one transaction
+     * @param _btcAmount: Amount of `BTC` being deposited
+     * @param _amountOfsaUSDToMint: Amount of `saUSD` to mint in return
+     */
     function depositBTCAndMintsaUSD(uint256 _btcAmount, uint256 _amountOfsaUSDToMint) external {
         depositBTC(_btcAmount);
         mintsaUSD(_amountOfsaUSDToMint);
     }
 
+    /**
+     * @notice and @dev This function will burn `saSUD` and redeem `BTC` in one transaction
+     * @param amountToRedeem: Amount of `BTC` to redeem
+     * @param _amountOfsaUSDToBurn: Amount of `saUSD` to be burnt in return
+     */
     function redeemBTCForsaUSD(uint256 amountToRedeem, uint256 _amountOfsaUSDToBurn)
         external
         cannotbeZero(amountToRedeem)
@@ -117,17 +127,32 @@ contract SatoshiUSDEngine is ReentrancyGuard {
         _revertIfHealthFactorIsBroken(msg.sender);
     }
 
+    /**
+     * @notice and @dev This function will redeem specified amount of `BTC` when called
+     * @param _amountOfBTCToRedeem: Amount of `BTC` to be redeemed
+     */
     function redeemBTC(uint256 _amountOfBTCToRedeem) public cannotbeZero(_amountOfBTCToRedeem) nonReentrant {
         _redeemBTC(_amountOfBTCToRedeem, msg.sender, msg.sender);
 
         _revertIfHealthFactorIsBroken(msg.sender);
     }
 
+    /**
+     * @notice and @dev This function will burn the specified amount of `saUSD`
+     * @param _amountOfsaUSDToBurn: The amount of `saUSD` to be burnt
+     */
     function burnsaUSD(uint256 _amountOfsaUSDToBurn) public cannotbeZero(_amountOfsaUSDToBurn) {
         _burnsaUSD(_amountOfsaUSDToBurn, msg.sender, msg.sender);
         _revertIfHealthFactorIsBroken(msg.sender); // likelihood of this happening is very very unlikely
     }
 
+    /**
+     * @notice and @dev A user can be partially liquidated
+     * @notice and @dev There is a liquidation bonus for liquidating a user
+     * @notice and @dev The protocol has to be 200% over-collaterized for this function to work
+     * @param user: Address of the user to be liquidated. Their `_healthFactor` must be lower than `MIN_HEALTH_FACTOR`
+     * @param debtToCover: Amount of `saUSD` to be burnt to improve `user` health factor
+     */
     function liquidate(address user, uint256 debtToCover) external cannotbeZero(debtToCover) nonReentrant {
         // check to see that `user` is in fact liquidatable
         uint256 initialUserHealthFactor = _healthFactor(user);
@@ -161,6 +186,10 @@ contract SatoshiUSDEngine is ReentrancyGuard {
     //                         PUBLIC FUNCTIONS
     // ------------------------------------------------------------------
 
+    /**
+     * @notice and @dev This function will deposit `BTC` when called
+     * @param _btcAmount: Amount of `BTC` to deposit
+     */
     function depositBTC(uint256 _btcAmount) public cannotbeZero(_btcAmount) nonReentrant {
         s_btcDeposited[msg.sender][address(i_BTC)] += _btcAmount;
 
@@ -172,6 +201,10 @@ contract SatoshiUSDEngine is ReentrancyGuard {
         }
     }
 
+    /**
+     * @notice and @dev This function wil mint `saUSD` when called
+     * @param _amountOfsaUSDToMint: Amount of `saUSD` to mint
+     */
     function mintsaUSD(uint256 _amountOfsaUSDToMint) public cannotbeZero(_amountOfsaUSDToMint) nonReentrant {
         s_saUSDMinted[msg.sender] += _amountOfsaUSDToMint;
 
