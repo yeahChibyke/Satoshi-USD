@@ -43,7 +43,7 @@ contract HelperConfig is Script {
         vm.startBroadcast();
 
         MockV3Aggregator btcUsdPriceFeed = new MockV3Aggregator(DECIMALS, BTC_USD_MOCK_PRICE);
-        MockBTC mBTC = new MockBTC(8);
+        MockBTC mBTC = new MockBTC();
         vm.stopBroadcast();
 
         anvilNetworkConfig = NetworkConfig({

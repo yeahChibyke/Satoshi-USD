@@ -6,8 +6,8 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract MockBTC is ERC20 {
     uint8 private decimal;
 
-    constructor(uint8 _decimal) ERC20("Mock BTC", "mBTC") {
-        decimal = _decimal;
+    constructor() ERC20("Mock BTC", "mBTC") {
+        decimal = 6;
     }
 
     function decimals() public view override returns (uint8) {
