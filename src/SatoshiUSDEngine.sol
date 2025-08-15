@@ -108,7 +108,10 @@ contract SatoshiUSDEngine is ReentrancyGuard {
      * @param _btcAmount: Amount of `BTC` being deposited
      * @param _amountOfsaUSDToMint: Amount of `saUSD` to mint in return
      */
-    function depositBTCAndMintsaUSD(uint256 _btcAmount, uint256 _amountOfsaUSDToMint) external {
+    function depositBTCAndMintsaUSD(uint256 _btcAmount, uint256 _amountOfsaUSDToMint)
+        external
+        cannotbeZero(_btcAmount)
+    {
         depositBTC(_btcAmount);
         mintsaUSD(_amountOfsaUSDToMint);
     }

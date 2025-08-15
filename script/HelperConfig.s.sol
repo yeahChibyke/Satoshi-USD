@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 
 import {Script} from "forge-std/Script.sol";
 import {MockV3Aggregator} from "../test/mocks/Mockv3Aggregator.sol";
-import {MockBTC} from "../test/mocks/MockBTC.sol";
+import {ERC20Mock} from "@openzeppelin/contracts/mocks/token/ERC20Mock.sol";
 
 contract HelperConfig is Script {
     struct NetworkConfig {
@@ -43,7 +43,7 @@ contract HelperConfig is Script {
         vm.startBroadcast();
 
         MockV3Aggregator btcUsdPriceFeed = new MockV3Aggregator(DECIMALS, BTC_USD_MOCK_PRICE);
-        MockBTC mBTC = new MockBTC();
+        ERC20Mock mBTC = new ERC20Mock();
         vm.stopBroadcast();
 
         anvilNetworkConfig = NetworkConfig({
